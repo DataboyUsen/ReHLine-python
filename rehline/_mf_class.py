@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import _check_sample_weight
 from sklearn.exceptions import ConvergenceWarning
-from _base import  (_BaseReHLine, ReHLine_solver,
+from ._base import  (_BaseReHLine, ReHLine_solver,
                     _make_loss_rehline_param,  _make_constraint_rehline_param,
                     _cast_sample_bias, _cast_sample_weight)
 
