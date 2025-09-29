@@ -175,11 +175,8 @@ class plqMF_Ridge(_BaseReHLine, BaseEstimator):
         checks = [
             (0 < rho < 1, "rho must be between 0 and 1"),
             (C > 0, "C must be positive"),
-            (isinstance(rank, int) and rank > 0, "rank must be positive integer"),
-            (isinstance(n_users, int) and n_users > 0, "n_users must be positive integer"),
-            (isinstance(n_items, int) and n_items > 0, "n_items must be positive integer"),
-            (isinstance(max_iter_CD, int) and max_iter_CD > 0, "max_iter_CD must be positive integer"),
-            (tol_CD > 0, "tol_CD must be positive")
+            (tol_CD > 0, "tol_CD must be positive"),
+            (tol > 0, "tol must be positive")
         ]
         for condition, error_msg in checks:
             if not condition:
