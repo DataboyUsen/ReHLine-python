@@ -5,12 +5,14 @@ from ._class import CQR_Ridge, ReHLine, plqERM_Ridge
 from ._internal import rehline_internal, rehline_result
 from ._path_sol import plqERM_Ridge_path_sol
 from ._sklearn_mixin import plq_Ridge_Classifier, plq_Ridge_Regressor
+from ._mf_class import plqMF_Ridge
 
 __all__ = ("ReHLine_solver",
            "_BaseReHLine",
            "ReHLine",
            "plqERM_Ridge",
            "CQR_Ridge",
+           "plqMF_Ridge",
            "plqERM_Ridge_path_sol",
            "plq_Ridge_Classifier",
            "plq_Ridge_Regressor",
