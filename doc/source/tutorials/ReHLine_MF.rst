@@ -12,8 +12,6 @@ Currently supported PLQ losses include:
    \end{aligned}
 
 
-
-
 1. Problem Description
 ----------------------
 
@@ -71,9 +69,6 @@ Or you can choose to use an unbiased version of this algorithm, which simply opt
         \right]
         
 
-
-
-
 2. Algorithm Explanation
 ------------------------
 
@@ -83,8 +78,11 @@ Within the Coordinate Descent (CD) framework, this algorithm conducts optimizati
 - :math:`I_u`: Items rated by user :math:`u`
 
 
-🛠️Biased Version: :math:`\hat{y}_{ui} = \mathbf{p}_u^\top \mathbf{q}_i + a_u + b_i`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+🛠️Biased Version: 
+^^^^^^^^^^^^^^^^^^
+
+.. math::
+        \hat{y}_{ui} = \mathbf{p}_u^\top \mathbf{q}_i + a_u + b_i
 
 **STEP1: User Side Update**
 
@@ -167,8 +165,11 @@ After each sub-optimization, denoting result as :math:`\beta^*_i`, item side par
 Here the intercept term of the ReHLine optimization is used as item bias, and remaining coefficient part is used as item latent vector.
 
 
-🔧Unbiased Version: :math:`\hat{y}_{ui} = \mathbf{p}_u^\top \mathbf{q}_i`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+🔧Unbiased Version: 
+^^^^^^^^^^^^^^^^^^^^
+
+.. math::
+        \hat{y}_{ui} = \mathbf{p}_u^\top \mathbf{q}_i
 
 **STEP1: User Side Update**
 
@@ -229,15 +230,9 @@ After each sub-optimization, denoting result as :math:`\mathbf{q}^*_i`, item sid
   \mathbf{q}_i \leftarrow \mathbf{q}^*_i
 
 
-
-
-
-
-
-
-3. Regularization Strength Conversion
+3. Regularization Conversion
 -------------------------------------
-The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. For users who prefer to set the penalty strength directly, the following equivalents can be used:
+The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. For users who prefer to set the penalty strength directly, you may achieve conversion through the following formula:
 
 .. math::
         \lambda_{\text{user}} = \frac{\rho}{Cn}
@@ -254,35 +249,39 @@ The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. Fo
 4. Implementation Guide
 -----------------------
 
-To get started, ReHLine provides `MovieLens 100K <https://grouplens.org/datasets/movielens/100k/>`_ dataset. The implementation can be easily adapted to your specific **User-Item-Rating** data, allowing you to experiment with various loss functions.
+A simple synthetic dataset is used for illustration. The implementation can be easily adapted to your specific **User-Item-Rating** data, allowing you to experiment with various loss functions.
 
 .. code-block:: python
 
   # Packages
   import numpy as np
-  from rehline import plqMF_Ridge, load_dataset
+  from rehline import plqMF_Ridge, make_ratings
   from sklearn.model_selection import train_test_split
 
   # Data Preparation
-  X, y = load_dataset("ml-100k", return_X_y=True) # load MovieLens-100k dataset
-  user_num, item_num = np.max(X, axis=0) + 1 # user number & item number
-  X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42) # split data into training set & testing set
+  user_num, item_num = 1200, 4000 
+  ratings = make_ratings(n_users=user_num, n_items=item_num, n_interactions=50000, seed=42) # Simulate data
+  X_train, X_test, y_train, y_test = train_test_split(ratings['X'], ratings['y'], test_size=0.3, random_state=42) # Split into training & testing set
   
   # Model Construction
-  clf = plqMF_Ridge(C = 0.0001, # Default penalty strength is weak, it is recommended to set a relatively small C value
-                    rank = 6,
-                    loss={'name': 'mse'},
+  clf = plqMF_Ridge(C=0.001, # Default penalty strength is weak, it is recommended to set a relatively small C value
+                    rank=6,
+                    loss={'name': 'mae'},
                     n_users=user_num, n_items=item_num)
   clf.fit(X_train, y_train) # fit the model
   
   # Evaluation
-  training_rmse = np.sqrt( clf.history[-1, 0] / clf.n_ratings )
-  y_pred = clf.decision_function(X_test)
-  testing_rmse = np.sqrt( np.mean((y_pred - y_test)**2) )
-  
-  print(f"Training RMSE: {training_rmse:.3f}")
-  print(f"Testing  RMSE: {testing_rmse:.3f}")
-  
+  y_baseline = np.mean(y_train) # use global mean as a baseline prediction
+  y_pred = clf.decision_function(X_test)     
+
+  training_mae = clf.history[-1, 0] / clf.n_ratings
+  testing_mae = np.mean(np.abs(y_pred - y_test))
+  baseline_mae = np.mean(np.abs(y_baseline - y_test))
+
+  print(f"Training MAE: {training_mae:.3f}")
+  print(f"Testing  MAE: {testing_mae:.3f}")
+  print(f"Baseline MAE: {baseline_mae:.3f}")
+
 
 5. Appendix
 -----------
@@ -330,6 +329,11 @@ Plug above transformation of :math:`L_i(\cdot)` into the objective function to o
     \right\}
 
 Above optimization is still a ReHLine problem.
+
+
+
+
+
 
 
 
