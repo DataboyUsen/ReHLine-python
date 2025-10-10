@@ -12,8 +12,8 @@ Currently supported PLQ losses include:
    \end{aligned}
 
 
-1. Problem Description
-----------------------
+Problem Description
+-------------------
 
 Considering an triplet format dataset (User ID, Item ID, Ratings) derived from target sparse matrix, the optimization problem corresponding to this scenario is:
 
@@ -69,8 +69,8 @@ Or you can choose to use an unbiased version of this algorithm, which simply opt
         \right]
         
 
-2. Algorithm Explanation
-------------------------
+Algorithm Explanation
+---------------------
 
 Within the Coordinate Descent (CD) framework, this algorithm conducts optimization by alternately updating the user side parameters and the item side parameters. To formulate the optimization problem, we define:
 
@@ -230,8 +230,8 @@ After each sub-optimization, denoting result as :math:`\mathbf{q}^*_i`, item sid
   \mathbf{q}_i \leftarrow \mathbf{q}^*_i
 
 
-3. Regularization Conversion
--------------------------------------
+Regularization Conversion
+-------------------------
 The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. For users who prefer to set the penalty strength directly, you may achieve conversion through the following formula:
 
 .. math::
@@ -246,8 +246,8 @@ The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. Fo
         \rho = \frac{1}{\frac{m \cdot \lambda_{\text{item}}}{ n \cdot \lambda_{\text{user}}}+1}
 
 
-4. Implementation Guide
------------------------
+Implementation Guide
+--------------------
 
 A simple synthetic dataset is used for illustration. The implementation can be easily adapted to your specific **User-Item-Rating** data, allowing you to experiment with various loss functions.
 
@@ -283,8 +283,8 @@ A simple synthetic dataset is used for illustration. The implementation can be e
   print(f"Baseline MAE: {baseline_mae:.3f}")
 
 
-5. Appendix
------------
+Appendix
+--------
 
 This section provides the proof of each sub-optimization in user side & item side is still a ReHLine problem. Consider a PLQ-ERM optimization, but now each observation has a unique individual bias:
 
@@ -332,7 +332,14 @@ Above optimization is still a ReHLine problem.
 
 
 
+Example
+-------
 
+.. nblinkgallery::
+   :caption: Emprical Risk Minimization
+   :name: rst-link-gallery
+
+   ../examples/MF.ipynb
 
 
 
