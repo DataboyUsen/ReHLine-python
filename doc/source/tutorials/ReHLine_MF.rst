@@ -12,6 +12,8 @@ Currently supported PLQ losses include:
    \end{aligned}
 
 
+
+
 Problem Description
 -------------------
 
@@ -69,6 +71,9 @@ Or you can choose to use an unbiased version of this algorithm, which simply opt
         \right]
         
 
+
+
+
 Algorithm Explanation
 ---------------------
 
@@ -110,13 +115,13 @@ That is, solving the following sub-optimization for each user:
          \sum_{i \in I_u} \frac{Cn}{2\rho} \cdot \phi(\, \mathbf{q}_i^\top \mathbf{p}_u + a_u + b_i \,)
         + \frac{1}{2} ( \lVert \mathbf{p}_u \rVert_2^2 + a_u^2 )
 
-Denoting :math:`\beta_u = \begin{bmatrix} a_u \\ \mathbf{p}_u \end{bmatrix}`, :math:`\mathbf{x}_i = \begin{bmatrix} 1 \\ \mathbf{q}_i \end{bmatrix}` and :math:`C_{user}=\frac{Cn}{2\rho}`, sub-optimization now becomes:
+Denoting :math:`\beta_u = \begin{bmatrix} a_u \\ \mathbf{p}_u \end{bmatrix}`, :math:`\mathbf{x}_i = \begin{bmatrix} 1 \\ \mathbf{q}_i \end{bmatrix}` and :math:`C_{\text{user}}=\frac{Cn}{2\rho}`, sub-optimization now becomes:
 
 .. math::
         \min_{
             \beta_u \in \mathbb{R}^{r+1}
         } 
-         \sum_{i \in I_u} C_{user} \cdot \phi(\, \mathbf{x}_i^\top \beta_u + b_i \,)
+         \sum_{i \in I_u} C_{\text{user}} \cdot \phi(\, \mathbf{x}_i^\top \beta_u + b_i \,)
         + \frac{1}{2}\lVert \beta_u \rVert_2^2
 
 By applying a transformation on the intercept term after ReLU-ReHU decomposition, the above sub-optimization problem is actually equivalent to a ReHLine optimization (see proof at Appendix). 
@@ -145,13 +150,13 @@ With user side fixed, the objective function for updating item side parameters r
        \right\}
        + \text{const}
 
-By denoting :math:`\beta_i = \begin{bmatrix} b_i \\ \mathbf{q}_i \end{bmatrix}`, :math:`\mathbf{x}_u = \begin{bmatrix} 1 \\ \mathbf{p}_u \end{bmatrix}` and :math:`C_{item}=\frac{Cm}{2(1-\rho)}`, sub-optimization for each item becomes:
+By denoting :math:`\beta_i = \begin{bmatrix} b_i \\ \mathbf{q}_i \end{bmatrix}`, :math:`\mathbf{x}_u = \begin{bmatrix} 1 \\ \mathbf{p}_u \end{bmatrix}` and :math:`C_{\text{item}}=\frac{Cm}{2(1-\rho)}`, sub-optimization for each item becomes:
 
 .. math::
         \min_{
             \beta_i \in \mathbb{R}^{r+1}
         } 
-         \sum_{u \in U_i} C_{item} \cdot \phi(\, \mathbf{x}_u^\top \beta_i + a_u \,)
+         \sum_{u \in U_i} C_{\text{item}} \cdot \phi(\, \mathbf{x}_u^\top \beta_i + a_u \,)
         + \frac{1}{2}\lVert \beta_i \rVert_2^2
 
 Similarly, this is also a ReHLine optimization (see proof at Appendix). 
@@ -186,13 +191,13 @@ With item side fixed, the objective function for updating the user side paramete
        \right]
        + \text{const}
 
-By denoting :math:`C_{user}=\frac{Cn}{2\rho}`, it's quite intuitive that sub-optimization for each user is a ReHLine optimization:
+By denoting :math:`C_{\text{user}}=\frac{Cn}{2\rho}`, it's quite intuitive that sub-optimization for each user is a ReHLine optimization:
 
 .. math::
         \min_{
             \mathbf{p}_u \in \mathbb{R}^{r}
         } 
-        \sum_{i \in I_u} C_{user} \cdot \phi(\, \mathbf{q}_i^\top \mathbf{p}_u \,)
+        \sum_{i \in I_u} C_{\text{user}} \cdot \phi(\, \mathbf{q}_i^\top \mathbf{p}_u \,)
         + \frac{1}{2}\lVert \mathbf{p}_u \rVert_2^2
 
 After each sub-optimization, denoting result as :math:`\mathbf{p}^*_u`, user side parameters will be updated by: 
@@ -215,19 +220,25 @@ With user side fixed, the objective function for updating the item side paramete
        \right]
        + \text{const}
 
-By denoting :math:`C_{item}=\frac{Cm}{2(1-\rho)}`, it's quite intuitive that sub-optimization for each item is a ReHLine optimization:
+By denoting :math:`C_{\text{item}}=\frac{Cm}{2(1-\rho)}`, it's quite intuitive that sub-optimization for each item is a ReHLine optimization:
 
 .. math::
         \min_{
             \mathbf{q}_i \in \mathbb{R}^{r}
         } 
-        \sum_{u \in U_i} C_{item} \cdot \phi(\, \mathbf{p}_u^\top \mathbf{q}_i \,)
+        \sum_{u \in U_i} C_{\text{item}} \cdot \phi(\, \mathbf{p}_u^\top \mathbf{q}_i \,)
         + \frac{1}{2}\lVert \mathbf{q}_i \rVert_2^2
 
 After each sub-optimization, denoting result as :math:`\mathbf{q}^*_i`, item side parameters will be updated by: 
 
 .. math::
   \mathbf{q}_i \leftarrow \mathbf{q}^*_i
+
+
+
+
+
+
 
 
 Regularization Conversion
@@ -244,6 +255,7 @@ The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. Fo
         C = \frac{1}{m \cdot \lambda_{\text{item}} + n \cdot \lambda_{\text{user}}}
         \quad\text{and}\quad  
         \rho = \frac{1}{\frac{m \cdot \lambda_{\text{item}}}{ n \cdot \lambda_{\text{user}}}+1}
+
 
 
 Implementation Guide
@@ -283,6 +295,9 @@ A simple synthetic dataset is used for illustration. The implementation can be e
   print(f"Baseline MAE: {baseline_mae:.3f}")
 
 
+
+  
+
 Appendix
 --------
 
@@ -300,10 +315,10 @@ where :math:`\gamma_i` is individual bias. By applying ReLU-ReHU decomposition t
 .. math::
    \begin{align*}
    L_i(X_i \beta + \gamma_i) 
-   &= \sum_{l=1}^L \text{ReLU}\big[ \mathtt{u}_{li} (X_i \beta + \gamma_i) + \mathtt{v}_{li} \big] 
-      + \sum_{h=1}^H \text{ReHU}_{\tau_{hi}}\big[ \mathtt{s}_{hi} (X_i \beta + \gamma_i) + \mathtt{t}_{hi} \big] \\
-   &= \sum_{l=1}^L \text{ReLU}\big( \mathtt{u}_{li} X_i \beta + \mathtt{v}^*_{li} \big) 
-      + \sum_{h=1}^H \text{ReHU}_{\tau_{hi}}\big( \mathtt{s}_{hi} X_i \beta + \mathtt{t}^*_{hi} \big)
+   &= \sum_{l=1}^L \text{ReLU}\big[ \mathtt{u}_{li} (X_i^\top \beta + \gamma_i) + \mathtt{v}_{li} \big] 
+      + \sum_{h=1}^H \text{ReHU}_{\tau_{hi}}\big[ \mathtt{s}_{hi} (X_i^\top \beta + \gamma_i) + \mathtt{t}_{hi} \big] \\
+   &= \sum_{l=1}^L \text{ReLU}\big( \mathtt{u}_{li} X_i^\top \beta + \mathtt{v}^*_{li} \big) 
+      + \sum_{h=1}^H \text{ReHU}_{\tau_{hi}}\big( \mathtt{s}_{hi} X_i^\top \beta + \mathtt{t}^*_{hi} \big)
    \end{align*}
 
 where
@@ -323,12 +338,14 @@ Plug above transformation of :math:`L_i(\cdot)` into the objective function to o
     \left\{
         \sum_{i=1}^n
         \left[
-            \sum_{l=1}^L ReLU(\mathtt{u}_{li} X_i \beta + \mathtt{v}^*_{li}) + \sum_{h=1}^H ReHU_{\tau_{hi}}(\mathtt{s}_{hi} X_i \beta + \mathtt{t}^*_{hi})  
+            \sum_{l=1}^L ReLU(\mathtt{u}_{li} X_i^\top \beta + \mathtt{v}^*_{li}) + \sum_{h=1}^H ReHU_{\tau_{hi}}(\mathtt{s}_{hi} X_i^\top \beta + \mathtt{t}^*_{hi})  
         \right]
         + \frac{1}{2}\lVert \beta \rVert_2^2
     \right\}
 
 Above optimization is still a ReHLine problem.
+
+
 
 
 
@@ -340,9 +357,3 @@ Example
    :name: rst-link-gallery
 
    ../examples/MF.ipynb
-
-
-
-
-
-
