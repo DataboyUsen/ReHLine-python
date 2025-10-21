@@ -1,9 +1,7 @@
+
 import numpy as np
-import pandas as pd
-from pathlib import Path
 from sklearn.datasets import make_classification
 from sklearn.preprocessing import StandardScaler
-
 
 
 def make_fair_classification(n_samples=100, n_features=5, ind_sensitive=0):
