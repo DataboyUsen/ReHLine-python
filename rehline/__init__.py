@@ -6,6 +6,7 @@ from ._internal import rehline_internal, rehline_result
 from ._path_sol import plqERM_Ridge_path_sol
 from ._sklearn_mixin import plq_Ridge_Classifier, plq_Ridge_Regressor
 from ._mf_class import plqMF_Ridge
+from ._data import make_ratings #Test purpose, non essential
 
 __all__ = ("ReHLine_solver",
            "_BaseReHLine",
