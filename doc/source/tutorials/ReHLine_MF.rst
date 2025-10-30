@@ -95,23 +95,23 @@ Basic Usage:
 
 
    # 2. Data Preparation
-   ## Generate synthetic data (replace with your own data in practice)
+   # Generate synthetic data (replace with your own data in practice)
    user_num, item_num = 1200, 4000 
    ratings = make_ratings(n_users=user_num, n_items=item_num, 
                          n_interactions=50000, seed=42)
    
-   ## Split into training and testing sets
+   # Split into training and testing sets
    X_train, X_test, y_train, y_test = train_test_split(
        ratings['X'], ratings['y'], test_size=0.3, random_state=42)
 
 
    # 3. Model Construction
    clf = plqMF_Ridge(
-       C=0.001,               ## Regularization strength
-       rank=6,                ## Latent factor dimension
-       loss={'name': 'mae'},  ## Use absolute loss
-       n_users=user_num,      ## Number of users
-       n_items=item_num,      ## Number of items
+       C=0.001,                        ## Regularization strength
+       rank=6,                         ## Latent factor dimension
+       loss={'name': 'mae'},           ## Use absolute loss
+       n_users=user_num,               ## Number of users
+       n_items=item_num,               ## Number of items
    )
    clf.fit(X_train, y_train)
 
@@ -133,7 +133,7 @@ Choosing different `loss functions <./loss.rst>`_ through :code:`loss`:
    clf_mse = plqMF_Ridge(
         C=0.001, 
         rank=6, 
-        loss={'name': 'mse'},     ## Choose square loss
+        loss={'name': 'mse'},          ## Choose square loss
         n_users=user_num, 
         n_items=item_num)
    
@@ -141,7 +141,7 @@ Choosing different `loss functions <./loss.rst>`_ through :code:`loss`:
    clf_hinge = plqMF_Ridge(
         C=0.001, 
         rank=6, 
-        loss={'name': 'hinge'},   ## Choose hinge loss
+        loss={'name': 'hinge'},        ## Choose hinge loss
         n_users=user_num, 
         n_items=item_num)
 
@@ -156,7 +156,7 @@ Choosing different `loss functions <./loss.rst>`_ through :code:`loss`:
         loss={'name': 'mae'},
         n_users=user_num, 
         n_items=item_num,
-        constraint=[{'name': '>=0'}]  ## Use nonnegative constraint
+        constraint=[{'name': '>=0'}]   ## Use nonnegative constraint
     )
   
 The algorithm includes bias terms by default. To disable them, set: :code:`biased=False`:
@@ -170,7 +170,7 @@ The algorithm includes bias terms by default. To disable them, set: :code:`biase
         loss={'name': 'mae'},
         n_users=user_num, 
         n_items=item_num,
-        biased=False  ## Disable bias terms
+        biased=False                   ## Disable bias terms
     )
   
 Imposing different strengths of regularization on items/users through :code:`rho`:
@@ -184,7 +184,7 @@ Imposing different strengths of regularization on items/users through :code:`rho
         loss={'name': 'mae'},
         n_users=user_num, 
         n_items=item_num,
-        rho=0.7  ## Add heavier penalties for user parameters
+        rho=0.7                        ## Add heavier penalties for user parameters
     )
 
 Parameter Tuning
@@ -197,7 +197,7 @@ The model complexity is mainly controlled by :code:`C` and :code:`rank`.
    
    for C_value in [0.0002, 0.001, 0.005]:
        clf = plqMF_Ridge(
-            C=C_value,          ## Try different regularization strengths
+            C=C_value,                 ## Try different regularization strengths
             rank=6, 
             loss={'name': 'mae'},
             n_users=user_num, 
@@ -212,7 +212,7 @@ The model complexity is mainly controlled by :code:`C` and :code:`rank`.
    for rank_value in [4, 8, 12]:
        clf = plqMF_Ridge(
             C=0.001, 
-            rank=rank_value,    ## Try different latent factor dimensions
+            rank=rank_value,           ## Try different latent factor dimensions
             loss={'name': 'mae'},
             n_users=user_num, 
             n_items=item_num
@@ -236,15 +236,15 @@ Training progress can be monitored either by enabling :code:`verbose` output dur
         loss={'name': 'mae'},  
         n_users=user_num,     
         n_items=item_num,  
-        max_iter_CD=15,      ## Outer CD iterations
-        tol_CD=1e-5,         ## Outer CD tolerance  
-        max_iter=8000,       ## ReHLine solver iterations
-        tol=1e-2,            ## ReHLine solver tolerance
-        verbose=1,           ## Enable progress output
+        max_iter_CD=15,                ## Outer CD iterations
+        tol_CD=1e-5,                   ## Outer CD tolerance  
+        max_iter=8000,                 ## ReHLine solver iterations
+        tol=1e-2,                      ## ReHLine solver tolerance
+        verbose=1,                     ## Enable progress output
     )
     clf.fit(X_train, y_train)
 
-    print(clf.history)       ## Check training trace of cumulative loss and objection value
+    print(clf.history)                 ## Check training trace of cumulative loss and objection value
 
 Different Gaussian initial conditions can be manually set by :code:`init_mean` and :code:`init_sd`:
 
@@ -257,9 +257,11 @@ Different Gaussian initial conditions can be manually set by :code:`init_mean` a
         loss={'name': 'mae'},
         n_users=user_num,
         n_items=item_num,
-        init_mean=1.0,     ## Manually set mean of normal distribution
-        init_sd=0.5        ## Manually set sd of normal distribution
+        init_mean=1.0,                 ## Manually set mean of normal distribution
+        init_sd=0.5                    ## Manually set sd of normal distribution
     )
+
+
 
 Regularization Conversion
 -------------------------
@@ -275,6 +277,9 @@ The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. Fo
         C = \frac{1}{m \cdot \lambda_{\text{item}} + n \cdot \lambda_{\text{user}}}
         \quad\text{and}\quad  
         \rho = \frac{1}{\frac{m \cdot \lambda_{\text{item}}}{ n \cdot \lambda_{\text{user}}}+1}
+
+
+
 
 Example
 -------
