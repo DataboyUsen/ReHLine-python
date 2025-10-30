@@ -289,7 +289,7 @@ Different Gaussian initial conditions can be manually set by :code:`init_mean` a
 
 
 Regularization Conversion
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. For users who prefer to set the penalty strength directly, you may achieve conversion through the following formula:
 
 .. math::
