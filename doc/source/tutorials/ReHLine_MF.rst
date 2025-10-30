@@ -250,43 +250,16 @@ Different Gaussian initial conditions can be manually set by :code:`init_mean` a
 
 .. code-block:: python
 
-    import matplotlib.pyplot as plt
-
-    # Test different initialization strategies
-    initial_conditions  = [
-        {"init_mean": 0.0, "init_sd": 0.1, "label": "Small Gaussian"},
-        {"init_mean": 0.0, "init_sd": 1.0, "label": "Standard Gaussian"}, 
-        {"init_mean": 1.0, "init_sd": 0.5, "label": "Positive Shifted"}
-    ]
-
-    plt.figure(figsize=(10, 6))
-
-    for condition in initial_conditions:
-        # Initialize model with different initial conditions
-        clf = plqMF_Ridge(
-            C=0.001,
-            rank=6,
-            loss={'name': 'mae'},
-            n_users=user_num,
-            n_items=item_num,
-            init_mean=condition["init_mean"],   ## Manually set mean of normal distribution
-            init_sd=condition["init_sd"]        ## Manually set sd of normal distribution
-        )
-        
-        # Train and record history
-        clf.fit(X_train, y_train)
-        
-        # Plot convergence curve of objective function 
-        plt.plot(clf.history[:, 1], label=condition["label"])
-
-    plt.xlabel('Iterations')
-    plt.ylabel('Objective Function')
-    plt.title('Convergence with Different Initial Conditions')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-
+    # Initialize model with positive shifted normal 
+    clf = plqMF_Ridge(
+        C=0.001,
+        rank=6,
+        loss={'name': 'mae'},
+        n_users=user_num,
+        n_items=item_num,
+        init_mean=1.0,     ## Manually set mean of normal distribution
+        init_sd=0.5        ## Manually set sd of normal distribution
+    )
 
 Regularization Conversion
 -------------------------
@@ -302,9 +275,6 @@ The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. Fo
         C = \frac{1}{m \cdot \lambda_{\text{item}} + n \cdot \lambda_{\text{user}}}
         \quad\text{and}\quad  
         \rho = \frac{1}{\frac{m \cdot \lambda_{\text{item}}}{ n \cdot \lambda_{\text{user}}}+1}
-
-
-
 
 Example
 -------
