@@ -74,8 +74,8 @@ Implementation Guide
 
 A simple synthetic dataset is used for illustration. The implementation can be easily adapted to your specific triplet data, allowing you to experiment with various loss functions.
 
-Setup:
-^^^^^^
+Setup
+^^^^^
 
 To proceed, ensure that you have already installed :code:`rehline`:
 
@@ -83,8 +83,8 @@ To proceed, ensure that you have already installed :code:`rehline`:
 
     pip install rehline
 
-Basic Usage:
-^^^^^^^^^^^^
+Basic Usage
+^^^^^^^^^^^
 
 .. code-block:: python
 
@@ -261,8 +261,8 @@ Different Gaussian initial conditions can be manually set by :code:`init_mean` a
         init_sd=0.5                    ## Manually set sd of normal distribution
     )
 
-Practical Guidance:
-^^^^^^^^^^^^^^^^^^^
+Practical Guidance
+^^^^^^^^^^^^^^^^^^
 
 - The first column of :code:`X` corresponds to **users**, and the second column corresponds to **items**. Please ensure this aligns with your :code:`n_users` and :code:`n_items` parameters.
 - The default penalty strength is relatively weak; it is recommended to set a relatively small :code:`C` value initially.
