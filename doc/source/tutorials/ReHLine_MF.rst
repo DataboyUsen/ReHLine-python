@@ -10,6 +10,7 @@ We provide 2 versions of prediction methods:
     &\text{Excluding bias terms:}   && \hat{r}_{ui} = \mathbf{p}_u^T \mathbf{q}_i \\
     \end{aligned}
 
+
 Mathematical Formulation
 ------------------------
 
@@ -68,19 +69,19 @@ where
   are latent vector and individual bias of i-th item. Specifically, :math:`\mathbf{q}_i` is the i-th row of :math:`\mathbf{Q}`, and :math:`\beta_i` is the i-th element of :math:`\pmb{\beta}`
 
 
-
-
 Implementation Guide
 --------------------
 
 A simple synthetic dataset is used for illustration. The implementation can be easily adapted to your specific triplet data, allowing you to experiment with various loss functions.
 
-Practical Guidance:
-^^^^^^^^^^^^^^^^^^^
+Setup:
+^^^^^^
 
-- The first column of :code:`X` corresponds to **users**, and the second column corresponds to **items**. Please ensure this aligns with your :code:`n_users` and :code:`n_items` parameters.
-- The default penalty strength is relatively weak; it is recommended to set a relatively small :code:`C` value initially.
-- When using larger :code:`C` values, consider increasing :code:`max_iter` to avoid ConvergenceWarning.
+To proceed, ensure that you have already installed :code:`rehline`:
+
+.. code-block:: bash
+
+    pip install rehline
 
 Basic Usage:
 ^^^^^^^^^^^^
@@ -121,7 +122,6 @@ Basic Usage:
    mae_score = mean_absolute_error(y_test, y_pred)
    print(f"Test MAE: {mae_score:.3f}")
  
-
 Advanced Configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -261,6 +261,12 @@ Different Gaussian initial conditions can be manually set by :code:`init_mean` a
         init_sd=0.5                    ## Manually set sd of normal distribution
     )
 
+Practical Guidance:
+^^^^^^^^^^^^^^^^^^^
+
+- The first column of :code:`X` corresponds to **users**, and the second column corresponds to **items**. Please ensure this aligns with your :code:`n_users` and :code:`n_items` parameters.
+- The default penalty strength is relatively weak; it is recommended to set a relatively small :code:`C` value initially.
+- When using larger :code:`C` values, consider increasing :code:`max_iter` to avoid ConvergenceWarning.
 
 
 Regularization Conversion
@@ -277,8 +283,6 @@ The regularization in this algorithm is tuned via :math:`C` and :math:`\rho`. Fo
         C = \frac{1}{m \cdot \lambda_{\text{item}} + n \cdot \lambda_{\text{user}}}
         \quad\text{and}\quad  
         \rho = \frac{1}{\frac{m \cdot \lambda_{\text{item}}}{ n \cdot \lambda_{\text{user}}}+1}
-
-
 
 
 Example
