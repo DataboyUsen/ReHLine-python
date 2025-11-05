@@ -36,7 +36,7 @@ Classification loss
 
  * - **Squared SVM**
    - | ``name``: 'squared SVM' / 'squared svm' / 'squared hinge'
-   - | ``loss={'name': 'SVM'}``
+   - | ``loss={'name': 'squared SVM'}``
 
 Regression loss
 ~~~~~~~~~~~~~~~
@@ -70,7 +70,7 @@ Regression loss
 
  * - **MSE**
    - | ``name``: 'MSE' / 'mse' / 'mean squared error'
-   - | ``loss={'name': 'mae'}``
+   - | ``loss={'name': 'mse'}``
 
 Related Examples
 ----------------
