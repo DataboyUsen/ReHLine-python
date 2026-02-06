@@ -430,6 +430,19 @@ def _make_loss_rehline_param(loss, X, y):
         V[0] = -(y + loss["epsilon"])
         V[1] = y - loss["epsilon"]
 
+    elif loss["name"] in ["check_eps", "QR_eps", "quantile_eps"]:
+        # Check Loss with epsilon-tolerance: (rho_kappa(r) - epsilon)_+
+        qt = loss["qt"]  # kappa (quantile level)
+        epsilon = loss["epsilon"]
+        
+        U = np.zeros((2, n))
+        V = np.zeros((2, n))
+        
+        U[0] = -qt
+        U[1] = (1 - qt)
+        V[0] = qt * y - epsilon
+        V[1] = -(1 - qt) * y - epsilon
+
     elif (
         (loss["name"] == "MAE")
         or (loss["name"] == "mae")
