@@ -9,9 +9,11 @@ Example Gallery
    :name: rst-link-gallery
 
    examples/QR.ipynb
+   examples/QR_eps.ipynb
    examples/CQR.ipynb
    examples/SVM.ipynb
    examples/FairSVM.ipynb
+   examples/SVR.ipynb
    examples/RankRegression.ipynb
    examples/Path_solution.ipynb
    examples/Warm_start.ipynb
@@ -25,9 +27,11 @@ List of Examples
    :maxdepth: 1
 
    examples/QR.ipynb
+   examples/QR_eps.ipynb
    examples/CQR.ipynb
    examples/SVM.ipynb
    examples/FairSVM.ipynb
+   examples/SVR.ipynb
    examples/RankRegression.ipynb
    examples/Path_solution.ipynb
    examples/Warm_start.ipynb

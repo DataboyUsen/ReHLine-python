@@ -95,6 +95,26 @@ Minimizes the check loss (pinball loss) for estimating conditional quantiles [2]
 
    ../examples/QR.ipynb
 
+Quantile Regression with Epsilon Tolerance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Minimizes the check loss with an epsilon-insensitive zone for robust conditional quantile estimation.
+
+* **Names**: ``'check_eps'``, ``'quantile_eps'``, ``'QR_eps'``
+* **Parameters**:
+    * ``qt`` (*float*): The target quantile (e.g., 0.5 for median).
+    * ``epsilon`` (*float*): The tolerance parameter defining the insensitive zone.
+
+.. code-block:: python
+
+   loss = {'name': 'check_eps', 'qt': 0.25, 'epsilon': 0.1}
+
+**Related Example**
+
+.. nblinkgallery::
+   :name: qr-eps-gallery
+
+   ../examples/QR_eps.ipynb
+
 Huber Regression
 ^^^^^^^^^^^^^^^^
 Robust regression loss that is quadratic for small errors and linear for large errors [3]_.
@@ -119,6 +139,12 @@ Epsilon-insensitive loss [4]_.
 
    loss = {'name': 'svr', 'epsilon': 0.1}
 
+**Related Example**
+
+.. nblinkgallery::
+   :name: svr-gallery
+
+   ../examples/SVR.ipynb
 
 Mean Absolute Error (MAE)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
