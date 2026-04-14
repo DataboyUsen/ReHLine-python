@@ -527,6 +527,9 @@ class plqERM_ElasticNet(_BaseReHLine, BaseEstimator):
         The ElasticNet mixing parameter, with 0 <= l1_ratio < 1. For l1_ratio = 0 the penalty
         is an L2 penalty. For 0 < l1_ratio < 1, the penalty is a combination of L1 and L2.
 
+    omega : array of shape (n_features, ), default=np.empty(shape=(0, 0))
+        Weight coefficients for adaptive lasso.
+
     verbose : int, default=0
         Enable verbose output. Note that this setting takes advantage of a
         per-process runtime setting in liblinear that, if enabled, may not work
@@ -584,6 +587,7 @@ class plqERM_ElasticNet(_BaseReHLine, BaseEstimator):
         constraint=None,
         C=1.0,
         l1_ratio=0.5,
+        omega=None,
         U=None,
         V=None,
         Tau=None,
@@ -602,8 +606,8 @@ class plqERM_ElasticNet(_BaseReHLine, BaseEstimator):
         self.constraint = constraint if constraint is not None else []
         self.C = C
         self.l1_ratio = l1_ratio
-        self.rho = l1_ratio / (1 - l1_ratio)
         self.C_eff = C / (1 - l1_ratio)
+        self.omega = omega if omega is not None else np.empty(shape=(0, 0))
         self._U = U if U is not None else np.empty(shape=(0, 0))
         self._V = V if V is not None else np.empty(shape=(0, 0))
         self._S = S if S is not None else np.empty(shape=(0, 0))
@@ -677,6 +681,8 @@ class plqERM_ElasticNet(_BaseReHLine, BaseEstimator):
             self._Gamma = np.empty(shape=(0, 0))
             self._xi = np.empty(shape=(0, 0))
             self._mu = np.empty(shape=(0, 0))
+
+        self.rho = np.full(d, self.l1_ratio / (1 - self.l1_ratio)) * (self.omega if self.omega.size > 0 else 1.0)
 
         result = ReHLine_solver(
             X=X,
