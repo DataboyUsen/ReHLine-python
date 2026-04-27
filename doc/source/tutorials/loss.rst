@@ -3,8 +3,8 @@ Loss
 
 ReHLine supports a variety of convex PLQ loss functions for both classification and regression tasks.
 
-Usage Pattern
--------------
+Basic Usage
+-----------
 
 Define a loss function using a dictionary:
 
@@ -14,9 +14,26 @@ Define a loss function using a dictionary:
    # loss_kwargs: more keys and values for loss parameters
    loss = {'name': <loss_name>, **loss_kwargs}
 
+Available Losses
+----------------
 
-Classification
---------------
+Classification:
+
+* `SVM (Hinge Loss)`_
+* `Smooth SVM`_
+* `Squared SVM`_
+
+Regression:
+
+* `Quantile Regression`_
+* `Quantile Regression with Epsilon Tolerance`_
+* `Huber Regression`_
+* `Support Vector Regression (SVR)`_
+* `Mean Absolute Error (MAE)`_
+* `Mean Squared Error (MSE)`_
+
+Classification Losses
+---------------------
 
 SVM (Hinge Loss)
 ^^^^^^^^^^^^^^^^
@@ -52,7 +69,7 @@ A smoothed version of the Hinge loss (using ReHU) that is differentiable everywh
 .. nblinkgallery::
    :name: ssvm-gallery
 
-   ../examples/SVM.ipynb
+   ../examples/Smooth_SVM.ipynb
 
 Squared SVM
 ^^^^^^^^^^^
@@ -70,11 +87,11 @@ Squared Hinge loss.
 .. nblinkgallery::
    :name: squared-svm-gallery
 
-   ../examples/SVM.ipynb
+   ../examples/Squared_SVM.ipynb
 
 
-Regression
-----------
+Regression Losses
+-----------------
 
 Quantile Regression
 ^^^^^^^^^^^^^^^^^^^
@@ -127,6 +144,14 @@ Robust regression loss that is quadratic for small errors and linear for large e
 
    loss = {'name': 'huber', 'tau': 1.0}
 
+**Related Example**
+
+.. nblinkgallery::
+   :name: huber-gallery
+
+   ../examples/Huber.ipynb
+
+
 Support Vector Regression (SVR)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Epsilon-insensitive loss [4]_.
@@ -157,6 +182,13 @@ L1 loss, robust to outliers.
 
    loss = {'name': 'mae'}
 
+**Related Example**
+
+.. nblinkgallery::
+   :name: mae-gallery
+
+   ../examples/MAE.ipynb
+
 Mean Squared Error (MSE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Standard L2 loss (Least Squares).
@@ -168,6 +200,12 @@ Standard L2 loss (Least Squares).
 
    loss = {'name': 'mse'}
 
+**Related Example**
+
+.. nblinkgallery::
+   :name: mse-gallery
+
+   ../examples/MSE.ipynb
 
 References
 ----------
