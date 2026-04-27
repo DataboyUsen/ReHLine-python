@@ -20,27 +20,7 @@ Example Gallery
    examples/Sklearn_Mixin.ipynb
    examples/Multiclass_Classification.ipynb
    examples/NMF.ipynb
-   examples/ElasticNet.ipynb
-   examples/Adaptive_ElasticNet.ipynb
 
-List of Examples
-----------------
-
-.. toctree::
-   :maxdepth: 1
-
-   examples/QR.ipynb
-   examples/QR_eps.ipynb
-   examples/CQR.ipynb
-   examples/SVM.ipynb
-   examples/FairSVM.ipynb
-   examples/SVR.ipynb
-   examples/RankRegression.ipynb
-   examples/Path_solution.ipynb
-   examples/Warm_start.ipynb
-   examples/Sklearn_Mixin.ipynb
-   examples/Multiclass_Classification.ipynb
-   examples/NMF.ipynb
    examples/Smooth_SVM.ipynb
    examples/MonotonicSVM.ipynb
    examples/Squared_SVM.ipynb
@@ -50,5 +30,6 @@ List of Examples
    examples/CustomQR.ipynb
    examples/GridSearchCV_SVM_losses.ipynb
    examples/GridSearchCV_reg_losses.ipynb
+
    examples/ElasticNet.ipynb
    examples/Adaptive_ElasticNet.ipynb
