@@ -21,6 +21,7 @@ Example Gallery
    examples/Multiclass_Classification.ipynb
    examples/NMF.ipynb
    examples/ElasticNet.ipynb
+   examples/Adaptive_ElasticNet.ipynb
 
 List of Examples
 ----------------
@@ -41,3 +42,4 @@ List of Examples
    examples/Multiclass_Classification.ipynb
    examples/NMF.ipynb
    examples/ElasticNet.ipynb
+   examples/Adaptive_ElasticNet.ipynb

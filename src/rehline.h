@@ -80,6 +80,7 @@ void reset_fv_set(std::vector<std::pair<Index, Index>>& fvset, std::size_t n, st
 //   * S, T, Tau: [H x n]
 //   * A        : [K x d]
 //   * b        : [K]
+//   * rho      : [d]
 // - Pre-computed
 //   * r: [n]
 //   * p: [K]
@@ -175,7 +176,7 @@ private:
     // =================== Initialization functions =================== //
 
     // Compute the primal variable beta from dual variables
-    // beta = A'xi - U3 * vec(Lambda) - S3 * vec(Gamma)
+    // beta = A'xi - U3 * vec(Lambda) - S3 * vec(Gamma) + 2 * Mu - rho
     // A can be empty, one of U and V may be empty
     inline void set_primal()
     {
@@ -194,7 +195,7 @@ private:
         if (m_H > 0)
             LHterm.noalias() += m_S.cwiseProduct(m_Gamma).colwise().sum().transpose();
         m_beta.noalias() -= m_X.transpose() * LHterm;
-
+        // L1 related
         if (m_W > 0)
             m_beta.noalias() += Scalar(2.0) * m_mu - m_rho;
     }
@@ -282,8 +283,9 @@ private:
             obj += Scalar(0.5) * S3G.squaredNorm() - S3G_MuR + Scalar(0.5) * m_Gamma.squaredNorm() -
                 m_Gamma.cwiseProduct(m_T).sum();
         }
-        // If W = 0, all terms that depend on rho, or Mu will be zero
+        // If W = 0, all terms that depend on rho or Mu will be zero
         if (m_W > 0)
+            // 2.0 * ||Mu||^2 - 2.0 * rho' * Mu + 0.5 * ||rho||^2 
             obj += Scalar(2.0) * m_mu.squaredNorm() - Scalar(2.0) * m_rho.dot(m_mu) +
                 Scalar(0.5) * m_rho.squaredNorm();
         return obj;
@@ -651,7 +653,7 @@ public:
                   ConstRefMat A, ConstRefVec b,
                   ConstRefVec rho) :
         m_n(X.rows()), m_d(X.cols()), m_L(U.rows()), m_H(S.rows()), m_K(A.rows()), 
-        m_W((rho.array() != 0).count()), // check if l1 penalty is implemented
+        m_W(rho.rows()), // check if l1 penalty is implemented
         m_X(X), m_U(U), m_V(V), m_S(S), m_T(T), m_Tau(Tau), m_A(A), m_b(b),
         m_rho(rho),
         m_gk_denom(m_K), m_gli_denom(m_L, m_n), m_ghi_denom(m_H, m_n),
